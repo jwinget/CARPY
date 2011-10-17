@@ -1,0 +1,5 @@
+CARPY is a web app for comparing protein properties.
+The database is compiled from SGD and high-throughput studies.
+Comparisons are done using R, and the site is built on the Flask web framework.
+
+CARPY is still in very early development, and is not functional at this time

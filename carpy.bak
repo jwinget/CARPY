@@ -1,0 +1,331 @@
+import os, uuid
+from flask import Flask, url_for, request, render_template, session, redirect, flash
+from flaskext.sqlalchemy import SQLAlchemy
+from werkzeug import secure_filename
+
+#---- CONFIGURATION ----#
+app = Flask(__name__)
+app.config.from_object('config')
+db = SQLAlchemy(app)
+#---- END CONFIGURATION ----#
+
+#---- MODELS ----#
+# This model defines the database structure used to store
+# information about each protein
+class Protein(db.Model):
+	# The name of the table in the database
+	__tablename__ = 'proteins'
+
+	# List of protein properties and their data types
+	pk = db.Column(db.Integer, primary_key=True)
+	feature = db.Column(db.String(15))
+	sgid = db.Column(db.String(15))
+	molwt = db.Column(db.Integer)
+	pi = db.Column(db.Float)
+	cai = db.Column(db.Float)
+	length = db.Column(db.Integer)
+	nterm_seq = db.Column(db.String(20))
+	cterm_seq = db.Column(db.String(20))
+	codon_bias = db.Column(db.Float)
+	ala = db.Column(db.Integer)
+	arg = db.Column(db.Integer)
+	asn = db.Column(db.Integer)
+	asp = db.Column(db.Integer)
+	cys = db.Column(db.Integer)
+	gln = db.Column(db.Integer)
+	glu = db.Column(db.Integer)
+	gly = db.Column(db.Integer)
+	his = db.Column(db.Integer)
+	ile = db.Column(db.Integer)
+	leu = db.Column(db.Integer)
+	lys = db.Column(db.Integer)
+	met = db.Column(db.Integer)
+	phe = db.Column(db.Integer)
+	pro = db.Column(db.Integer)
+	ser = db.Column(db.Integer)
+	thr = db.Column(db.Integer)
+	trp = db.Column(db.Integer)
+	tyr = db.Column(db.Integer)
+	val = db.Column(db.Integer)
+	fop_score = db.Column(db.Float)
+	gravy_score = db.Column(db.Float)
+	aromaticity_score = db.Column(db.Float)
+	feature_type = db.Column(db.String(25))
+	orfid = db.Column(db.Integer)
+	yorf = db.Column(db.String(15))
+	gene_name = db.Column(db.String(20))
+	gfp_tagged = db.Column(db.Boolean)
+	gfp_visualized = db.Column(db.Boolean)
+	tap_visualized = db.Column(db.Boolean)
+	abundance = db.Column(db.Integer)
+	error = db.Column(db.Integer)
+	localization_summary = db.Column(db.String(20))
+	ambiguous = db.Column(db.Boolean)
+	mitochondrion = db.Column(db.Boolean)
+	vacuole = db.Column(db.Boolean)
+	spindle_pole = db.Column(db.Boolean)
+	cell_periphery = db.Column(db.Boolean)
+	punctate_composite = db.Column(db.Boolean)
+	vacuolar_membrane = db.Column(db.Boolean)
+	er = db.Column(db.Boolean)
+	nuclear_periphery = db.Column(db.Boolean)
+	endosome = db.Column(db.Boolean)
+	bud_neck = db.Column(db.Boolean)
+	microtubule = db.Column(db.Boolean)
+	golgi = db.Column(db.Boolean)
+	late_golgi = db.Column(db.Boolean)
+	peroxisome = db.Column(db.Boolean)
+	actin = db.Column(db.Boolean)
+	nucleolus = db.Column(db.Boolean)
+	cytoplasm = db.Column(db.Boolean)
+	er_to_golgi = db.Column(db.Boolean)
+	early_golgi = db.Column(db.Boolean)
+	lipid_particle = db.Column(db.Boolean)
+	nucleus = db.Column(db.Boolean)
+	bud = db.Column(db.Boolean)
+	interactors_ms = db.Column(db.Integer)
+	interactors_y2h = db.Column(db.Integer)
+	disorder = db.Column(db.Float)
+	essential = db.Column(db.Boolean)
+	corrected_halflife = db.Column(db.Integer)
+	absolute_cost = db.Column(db.Float)
+	dN_dS_adjusted = db.Column(db.Float)
+	multifunctional = db.Column(db.Integer)
+
+	def __init__(self, feature, sgid, molwt, pi, cai, length, nterm_seq, cterm_seq, codon_bias,
+					ala, arg, asn, asp, cys, gln, glu, gly, his, ile,
+					leu, lys, met, phe, pro, ser, thr, trp, tyr, val,
+					fop_score, gravy_score, aromaticity_score, feature_type, orfid, yorf,
+					gene_name, gfp_tagged, gfp_visualized, tap_visualized, abundance, error,
+					localization_summary, ambiguous, mitochondrion, vacuole, spindle_pole,
+					cell_periphery, punctate_composite, vacuolar_membrane, er, nuclear_periphery,
+					endosome, bud_neck, microtubule, golgi, late_golgi, peroxisome, actin,
+					nucleolus, cytoplasm, er_to_golgi, early_golgi, lipid_particle, nucleus, bud,
+					interactors_ms, interactors_y2h, disorder, essential, corrected_halflife,
+					absolute_cost, dN_dS_adjusted, multifunctional): 
+		self.feature = feature
+		self.sgid = sgid
+		self.molwt = molwt
+		self.pi = pi
+		self.cai = cai
+		self.length = length
+		self.nterm_seq = nterm_seq
+		self.cterm_seq = cterm_seq
+		self.codon_bias = codon_bias
+		self.ala = ala
+		self.arg = arg
+		self.asn = asn
+		self.asp = asp
+		self.cys = cys
+		self.gln = gln
+		self.glu = glu
+		self.gly = gly
+		self.his = his
+		self.ile = ile
+		self.leu = leu
+		self.lys = lys
+		self.met = met
+		self.phe = phe
+		self.pro = pro
+		self.ser = ser
+		self.thr = thr
+		self.trp = trp
+		self.tyr = tyr
+		self.val = val
+		self.fop_score = fop_score
+		self.gravy_score = gravy_score
+		self.aromaticity_score = aromaticity_score
+		self.feature_type = feature_type
+		self.orfid = orfid
+		self.yorf = yorf
+		self.gene_name = gene_name
+		self.gfp_tagged = gfp_tagged
+		self.gfp_visualized = gfp_visualized
+		self.tap_visualized = tap_visualized
+		self.abundance = abundance
+		self.error = error
+		self.localization_summary = localization_summary
+		self.ambiguous = ambiguous
+		self.mitochondrion = mitochondrion
+		self.vacuole = vacuole
+		self.spindle_pole = spindle_pole
+		self.cell_periphery = cell_periphery
+		self.punctate_composite = punctate_composite
+		self.vacuolar_membrane = vacuolar_membrane
+		self.er = er
+		self.nuclear_periphery = nuclear_periphery
+		self.endosome = endosome
+		self.bud_neck = bud_neck
+		self.microtubule = microtubule
+		self.golgi = golgi
+		self.late_golgi = late_golgi
+		self.peroxisome = peroxisome
+		self.actin = actin
+		self.nucleolus = nucleolus
+		self.cytoplasm = cytoplasm
+		self.er_to_golgi = er_to_golgi
+		self.early_golgi = early_golgi
+		self.lipid_particle = lipid_particle
+		self.nucleus = nucleus
+		self.bud = bud
+		self.interactors_ms = interactors_ms
+		self.interactors_y2h = interactors_y2h
+		self.disorder = disorder
+		self.essential = essential
+		self.corrected_halflife = corrected_halflife
+		self.absolue_cost = absolute_cost
+		self.dN_dS_adjusted = dN_dS_adjusted
+		self.multifunctional = multifunctional
+
+	def __repr__(self):
+		return '<Protein %r>' % self.gene_name
+
+#---- END MODELS ----#
+
+#---- MISC FUNCTIONS ----#
+
+# A simple function to check if something is an int
+def IntCheck(s):
+	try:
+		int(s)
+		return True
+	except ValueError:
+		return False
+
+def allowed_file(filename):
+	return '.' in filename and \
+		filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+#---- END MISC FUNCTIONS ---#
+
+#---- APP ROUTES AND LOGIC ----#
+@app.route('/')
+def index():
+	if request.method == 'GET':
+		return render_template('index.html')
+
+@app.route('/about')
+def about():
+	return render_template('about.html')
+
+@app.route('/retrieve/<yorf>') # Result page for a single protein
+def single(yorf):
+	if request.method == 'GET':
+		return render_template('single.html', yorf=yorf)
+
+@app.route('/retrieve', methods=['GET', 'POST']) # Result page for several proteins
+def retrieve():
+	'''
+	Retrieve data on proteins and display it
+	'''
+	if request.method == 'GET':
+		pass
+	elif request.method == 'POST':
+		u = uuid.uuid4() # random UUID, not 100% unique
+		key = str(u)
+		# Upload the input files and save them in a unique directory
+		enriched = None
+		if request.files:
+			enriched = request.files['enriched_file']
+		if enriched and allowed_file(enriched.filename):
+			''' Initialize a directory for a query and save the gene list'''
+			dir = os.path.join(app.config['UPLOAD_FOLDER'], key)
+			if not os.path.exists(dir):
+				os.makedirs(dir)
+			filename = secure_filename(enriched.filename)
+			e_obj = os.path.join(dir, filename)
+			enriched.save(e_obj)
+
+		else:
+			pass	
+			# Write pasted IDs to file and save
+			dir = os.path.join(app.config['UPLOAD_FOLDER'], key)
+			if not os.path.exists(dir):
+				os.makedirs(dir)
+			ids = request.form['identifiers']
+			id_list = ids.split()
+			ids_newlines = [id+'\n' for id in id_list]
+			writestr = ''.join(ids_newlines)
+			e_obj = os.path.join(dir, 'enriched_ids.txt')
+			f = open(e_obj, 'w')
+			f.write(writestr.rstrip('\n'))
+			f.close()
+			
+		try:
+			background = request.files['background_file']
+			if background and allowed_file(background.filename):
+				filename = secure_filename(background.filename)
+				b_obj = os.path.join(dir, filename)
+				background.save(b_obj)
+		except:
+			pass
+
+	# Read the id_files and parse
+		id_file = open(e_obj, 'r')
+		ids = id_file.read().rstrip('\n')
+		parsed_ids = ids.split('\n')
+		id_file.close()
+		not_found = []
+		params = {}
+		for id in parsed_ids:
+			sgid_query = Protein.query.filter_by(sgid = id).first()
+			yorf_query = Protein.query.filter_by(yorf = id).first()
+			name_query = Protein.query.filter_by(gene_name = id).first()
+			if sgid_query or yorf_query or name_query is not None:
+				if sgid_query is not None:
+					p = sgid_query
+				elif yorf_query is not None:
+					p = yorf_query
+				else:
+					p = name_query
+				paramlist = [p.yorf, p.sgid, p.gene_name, p.molwt, p.pi, p.length,
+						p.localization_summary, p.disorder, p.essential,
+						p.interactors_ms, p.interactors_y2h]
+				for i in xrange(len(paramlist)):
+					if paramlist[i] == 0 or paramlist[i] == '0':
+						paramlist[i] = None
+				params[p.yorf] = paramlist
+			else:
+				not_found.append(id)
+
+		if len(parsed_ids) == 1:
+			id = id_list[0]
+			return redirect(url_for('single', yorf=id, params=params)) # Redirect to single result page
+		return render_template('retrieve.html', params=params, not_found=not_found)
+
+@app.route('/cite')
+def cite():
+	return render_template('cite.html')
+
+@app.route('/admin')
+def admin():
+	return render_template('admin.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+	error = None
+	if request.method == 'POST':
+		if request.form['username'] != app.config['USERNAME']:
+			error = 'Invalid username'
+		elif request.form['password'] != app.config['PASSWORD']:
+			error = 'Invalid password'
+		else:
+			session['logged_in'] = True
+			flash('You were logged in')
+			return redirect(url_for('thankyou'))
+	return render_template('login.html', error=error)
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out')
+    return redirect(url_for('index'))
+
+@app.errorhandler(404)
+def page_not_found(e):
+	return render_template('404.html'), 404
+
+#---- END APP ROUTES AND LOGIC ----#
+
+if __name__ == '__main__':
+	app.run()

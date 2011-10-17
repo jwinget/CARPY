@@ -1,0 +1,4 @@
+- Implement cache:
+	* Produce MD5 checksum of query
+	* Store checksum & UUID in database
+	* For subsequent queries, if checksum in DB pull data from uuid folder

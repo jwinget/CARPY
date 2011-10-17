@@ -1,0 +1,14 @@
+<!doctype html>
+<title> CARPY | Comprehensive Annotated Repository of Proteins in Yeast </title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
+<div class=header>
+	<a class= logo href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='logo.png') }}" /></a>
+	<div class=navigation>{% block nav %}{% endblock %}</div>
+</div>
+<div class=page>
+	{% block body %}{% endblock %}
+</div>
+<div class=footer>
+</div>

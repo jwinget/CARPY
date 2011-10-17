@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block nav %}
+	<div class=nav>
+		<ul>
+			<li><a class=active href="{{ url_for("index") }}">Home</a></li>
+			<li><a href="{{ url_for("about") }}">About</a></li>
+			<li><a href="{{ url_for("cite") }}">Cite</a></li>
+		</ul>
+	</div>
+{% endblock %}
+{% block body %}
+	<div class=alert>
+	<h3>CARPY is currently in development and is not functional at this time</h3>
+	</div>
+	<div class=main>
+		<div class=column>
+			<h2>What is CARPY?</h2>
+			<p>CARPY is a tool for testing enrichment of protein properties.
+			<p>Currently 40+ properties compiled from SGD and high-throughput analyses are tracked for over 6000 proteins.
+			<p>The database can be queried by SGID or yeast ORF identifiers
+		</div>
+		<div class=column>
+			<h2>How does it work?</h2>	
+			<p>The input for CARPY is two lists of protein IDs: enriched and background</p>
+			<p>For instance, if you are examining quantitative mass spectrometry data, you could have SILAC-enriched proteins in the "enriched" list and non-enriched or cell lysate proteins in the "background" list</p>
+			<p>CARPY then performs statistical analysis of all properties to find those that are significantly enriched or de-enriched in your dataset</p>
+			<p>More information on the statistical analysis can be found on the <a href="{{ url_for("about") }}">about</a> page</p>
+		</div>
+		<div class=column>
+			<h2>Start a query</h2>
+			<div class=querybox>
+				<h3>Retrieve Data</h3>
+				<h4>Paste IDs, 1/line (gene name, yORF, or SGID)</h4>
+				<form action="{{ url_for('retrieve') }}" method=POST>
+					<dt>Interesting or Enriched Proteins
+					<dd><textarea rows=10 name=identifiers></textarea>
+					<dt>(Optional) Background Proteins
+					<dd><textarea rows=10 name=background></textarea>
+					<dd><input type=submit value='Submit Query' class=form_button />
+				</form>
+			</div>
+			<h3>or:</h3>
+			<div class=querybox>
+				<h4>Upload list(s) of IDs, 1 ID/line</h4>
+				<form action="{{ url_for("retrieve") }}" method=POST enctype='multipart/form-data'>
+				<dl>
+					<dt>Interesting or Enriched Proteins
+					<dd><input type=file name=enriched_file value='Upload file'>
+					<dt>(Optional) Background Proteins
+					<dd><input type=file name=background_file value='Background list'>
+					<dd><input type=submit value='Submit Query' class=form_button>
+				</dl>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

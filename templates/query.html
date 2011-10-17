@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block nav %}
+	<div class=nav>
+		<ul>
+			<li><a href="{{ url_for("index") }}">Home</a></li>
+			<li><a href="{{ url_for("about") }}">About</a></li>
+			<li><a class=active href="{{ url_for("query") }}">Query</a></li>
+			<li><a href="{{ url_for("cite") }}">Cite</a></li>
+		</ul>
+	</div>
+{% endblock %}
+
+{% block body %}
+<div class=main>
+	<div class=column>
+		<ul>
+			{% for result in results %}
+			<li>{{ result }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endblock %}
