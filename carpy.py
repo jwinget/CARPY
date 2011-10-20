@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from mongokit import Connection, Document
 
 #---- Reverse Proxy Fix ----#
@@ -18,7 +18,7 @@ class ReverseProxied(object):
 			environ['wsgi.url_scheme'] = scheme
 		return self.app(environ, start_response)
 
-# configuration
+#---- Configuration ----#
 MONGODB_HOST = 'localhost'
 MONGODB_PORT = 27017
 
@@ -28,106 +28,34 @@ app.config.from_object(__name__)
 
 app.debug = True
 
-# Mongo connection
+#---- Mongo Connection ----#
 connection = Connection(app.config['MONGODB_HOST'],
 						app.config['MONGODB_PORT'])
 
 #---- Models ----#
 class Protein(Document):
-	''' A class defining the protein properties '''
-	structure = {
-		'yorf': unicode,
-		'genename': unicode,
-		'sgid': unicode,
-		'molecularweight': int,
-		'pi': float,
-		'cai': float,
-		'proteinlength': int,
-		'codonbias': int,
-		'fopscore': float,
-		'gravyscore': float,
-		'aromaticityscore': float,
-		'genetype': unicode,
-		'orfid': int,
-		'abundance': int,
-		'localization': unicode,
-		'localization_detailed': {
-			'ambiguous': bool,
-			'mitochondrion': bool,
-			'vacuole': bool,
-			'spindlepole': bool,
-			'cellperiphery': bool,
-			'punctatecomposite': bool,
-			'vacuolarmembrane': bool,
-			'er': bool,
-			'nuclearperiphery': bool,
-			'endosome': bool,
-			'budneck': bool,
-			'microtubule': bool,
-			'golgi': bool,
-			'lategolgi': bool,
-			'peroxisome': bool,
-			'actin': bool,
-			'nucleolus': bool,
-			'cytoplasm': bool,
-			'ertogolgi': bool,
-			'earlygolgi': bool,
-			'lipidparticle': bool,
-			'nucleus': bool,
-			'bud': bool
-			},
-		'interactors': {
-			'ms': int,
-			'yeast2hybrid': int,
-			'scansitemotifs': int,
-			'percentscansitemotifs': float,
-			'hubtype': unicode
-			},
-		'disorder': {
-			'disorder': float,
-			'iupredlong': float,
-			'iupredshort': float,
-			'disobindinglong': float,
-			'disobindingshort': float
-			},
-		'essential': bool,
-		'halflife': int,
-		'absolutecost': float,
-		'evolutionaryrate': float,
-		'aa_percs': {
-			'ala': float,
-			'arg': float,
-			'asn': float,
-			'asp': float,
-			'cys': float,
-			'gln': float,
-			'glu': float,
-			'gly': float,
-			'his': float,
-			'ile': float,
-			'leu': float,
-			'lys': float,
-			'met': float,
-			'phe': float,
-			'pro': float,
-			'ser': float,
-			'thr': float,
-			'trp': float,
-			'tyr': float,
-			'val': float
-			},
-		'prion': {
-			'weissman': bool,
-			'tango': bool,
-			'gerstein': bool,
-			'lindquist': bool
-			}
-	}
+	''' The structure of the document comes from the CSV which we import externally.
+	Fields can be accessed using their names from the header line of the CSV file. '''
 	use_dot_notation = True
-	required_fields = ['sgid']
 
 # Register the Protein document with our current connection
 connection.register([Protein])
+
+# This connects to the pre-existing database Carpy and collection Proteins
+collection = connection['Carpy'].Proteins
+
+#---- Functions ----#
+def protein_query(id):
+	id = id.upper()
+	genename_query = collection.find_one({'genename': id})
+	if genename_query is not None:
+		return genename_query
+	sys_query = collection.find_one({'systematicname': id})
+	if sys_query is not None:
+		return sys_query
+	sgid_query = collection.find_one({'sgid': id})
+	if sgid_query is not None:
+		return sgid_query
 
 #--- Views ----#
 @app.route('/')
@@ -142,6 +70,20 @@ def about():
 def cite():
 	return render_template('cite.html')
 
-@app.route('/retrieve')
-def retrieve():
-	return render_template('retrieve.html')
+@app.route('/protein/<id>')
+def single(id):
+	result = protein_query(id)
+	if not result:
+		return render_template('notfound.html')
+	else:
+		return render_template('single.html', result=result)
+
+@app.route('/retrieve', methods=['GET','POST'])
+def query():
+	if request.method == 'POST':
+		ids = request.form['identifiers'].split()
+		if len(ids) == 1:
+			id = ids[0]
+			return redirect(url_for('single', id=id))
+	else:
+		return render_template('searchform.html')

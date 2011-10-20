@@ -29,6 +29,7 @@ body {
 
 .main { 
 	margin-top: 3em;
+	padding: 0.5em 1em;
 	}
 
 .column {
@@ -94,7 +95,7 @@ p {
 	margin-top: 0.75em;
 	}
 body, p, .nav, textarea, li {
-	font-family: 'Play', 'Lucida Sans', Helvetica, Arial, sans-serif;
+	font-family: 'Lucida Sans', Helvetica, Arial, sans-serif;
 	}
 .logo {
 	font-size: 3em;

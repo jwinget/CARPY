@@ -21,9 +21,8 @@
 		</div>
 		<div class=column>
 			<h2>How does it work?</h2>	
-			<p>The input for CARPY is two lists of protein IDs: enriched and background</p>
-			<p>For instance, if you are examining quantitative mass spectrometry data, you could have SILAC-enriched proteins in the "enriched" list and non-enriched or cell lysate proteins in the "background" list</p>
-			<p>CARPY then performs statistical analysis of all properties to find those that are significantly enriched or de-enriched in your dataset</p>
+			<p>The input for CARPY is a list of protein IDs or gene names</p>
+			<p>CARPY performs statistical analysis of all properties to find those that are significantly enriched or de-enriched in your dataset compared to the proteome</p>
 			<p>More information on the statistical analysis can be found on the <a href="{{ url_for("about") }}">about</a> page</p>
 		</div>
 		<div class=column>
@@ -31,18 +30,18 @@
 			<div class=querybox>
 				<h3>Retrieve Data</h3>
 				<h4>Paste IDs, 1/line (gene name, yORF, or SGID)</h4>
-				<form action="{{ url_for('retrieve') }}" method=POST>
+				<form action="{{ url_for('query') }}" method=POST>
 					<dt>Interesting or Enriched Proteins
 					<dd><textarea rows=10 name=identifiers></textarea>
-					<dt>(Optional) Background Proteins
-					<dd><textarea rows=10 name=background></textarea>
+			<!--		<dt>(Optional) Background Proteins
+					<dd><textarea rows=10 name=background></textarea>-->
 					<dd><input type=submit value='Submit Query' class=form_button />
 				</form>
 			</div>
-			<h3>or:</h3>
+			<!--<h3>or:</h3>
 			<div class=querybox>
 				<h4>Upload list(s) of IDs, 1 ID/line</h4>
-				<form action="{{ url_for("retrieve") }}" method=POST enctype='multipart/form-data'>
+				<form action="{{ url_for("query") }}" method=POST enctype='multipart/form-data'>
 				<dl>
 					<dt>Interesting or Enriched Proteins
 					<dd><input type=file name=enriched_file value='Upload file'>
@@ -51,7 +50,7 @@
 					<dd><input type=submit value='Submit Query' class=form_button>
 				</dl>
 				</form>
-			</div>
+			</div>-->
 		</div>
 	</div>
 {% endblock %}

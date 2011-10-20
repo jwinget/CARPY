@@ -11,13 +11,18 @@
 {% endblock %}
 
 {% block body %}
+{% if not_found %}
+<div class=alert>
+	<h3>Warning: the following IDs were not found in the database:</h3>
+	<ul>
+	{% for nf in not_found %}
+		<li>{{ nf }}</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}
 <div class=main>
-	<div class=column>
-		<h1>{{ yorf }}</h1>
-		<h2>General properties</h2>
-		<ul>
-			<li>Molecular Weight:</li>
-		</ul>
-	</div>
+	<h1>{{ result['genename'] }}</h1>
+	<h2>{{ result['systematicname'] }} | <a href="http://www.yeastgenome.org/cgi-bin/locus.fpl?dbid={{ result['sgid'] }}">{{ result['sgid'] }}</a></h2>
 </div>
 {% endblock %}
