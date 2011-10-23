@@ -3,3 +3,7 @@ The database is compiled from SGD and high-throughput studies.
 Comparisons are done using R, and the site is built on the Flask web framework.
 
 CARPY is still in very early development, and is not functional at this time
+
+To import a new database:
+* Use vim to replace all instances of 'TRUE' with 1, 'FALSE' with 0, and 'NA' with ''
+* run: mongoimport -d Carpy -c Proteins --drop --headerline db.csv

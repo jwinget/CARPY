@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from mongokit import Connection, Document
 import uuid
 import os
+import subprocess
 
 #---- Reverse Proxy Fix ----#
 class ReverseProxied(object):
@@ -93,34 +94,33 @@ def retrieve():
 			d = str(uuid.uuid1())
 			os.mkdir('queries/'+d)
 			f = open('queries/'+d+'/ids.txt', 'w')
+			n = open('queries/'+d+'/not_found.txt', 'w')
 			for i in ids:
-				f.write(i+'\n')
+				r = protein_query(i)
+				if r:
+					sys_name = r['systematicname']
+					f.write(sys_name+'\n')
+				else:
+					n.write(i+'\n')
 			f.close()
-#			not_found = []
-#			result = [] 
-#			for i in ids:
-#				q = protein_query(i)
-#				if not q:
-#					not_found.append(i)
-#				else:
-#					result.append(q)
 			return redirect(url_for('query', d=d))
-#			return render_template('retrieve.html', not_found=not_found, result=result)
 	else:
 		return render_template('searchform.html')
 
 @app.route('/query/<d>')
 def query(d):
-	f = open('queries/'+d+'/ids.txt', 'r')
-	ids = f.readlines()
-	not_found = []
+	query_dir = 'queries/'+d+'/'
+	f = open(query_dir+'ids.txt', 'r')
+	ids = f.read().splitlines()
+	# Run the R script to determine enriched properties
+	outfile = query_dir+'enrichment_test.out'
+	subprocess.call(['Rscript', 'scripts/enrichment_test.R', query_dir])
+	n = open('queries/'+d+'/not_found.txt', 'r')
+	not_found = n.read().splitlines()
+	n.close()
 	result = [] 
 	for i in ids:
-		i = i.rstrip('\n')
 		q = protein_query(i)
-		if not q:
-			not_found.append(i)
-		else:
-			result.append(q)
+		result.append(q)
 	return render_template('retrieve.html', not_found=not_found, result=result)
 	f.close()
