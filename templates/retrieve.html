@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block nav %}
+	<div class=nav>
+		<ul>
+			<li><a href="{{ url_for("index") }}">Home</a></li>
+			<li><a href="{{ url_for("about") }}">About</a></li>
+			<li><a href="{{ url_for("cite") }}">Cite</a></li>
+		</ul>
+	</div>
+{% endblock %}
+
+{% block body %}
+{% if not_found %}
+<div class=alert>
+	<h3>Warning: the following IDs were not found in the database:</h3>
+	<ul>
+	{% for nf in not_found %}
+		<li>{{ nf }}</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}
+<div class=main>
+<h3>Sort items by:</h3>
+<ul id='sort-by'>
+	<li><a href='#genename'>Gene name</a></li>
+	<li><a href='#molecularweight'>Molecular Weight</a></li>
+</ul>
+<div class=sortable>
+{% for r in result %}
+	<div class=protein>
+		<h1 class=genename>{{ r.genename }}</h1>
+		<ul>
+			<li>Mass: <span class=molecularweight>{{ r.molecularweight }}</span></li>
+		</ul>
+	</div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}
