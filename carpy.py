@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from mongokit import Connection, Document
+import uuid
+import os
 
 #---- Reverse Proxy Fix ----#
 class ReverseProxied(object):
@@ -45,15 +47,15 @@ connection.register([Protein])
 collection = connection['Carpy'].Proteins
 
 #---- Functions ----#
-def protein_query(id):
-	id = id.upper()
-	genename_query = collection.find_one({'genename': id})
+def protein_query(i):
+	i = i.upper()
+	genename_query = collection.find_one({'genename': i})
 	if genename_query is not None:
 		return genename_query
-	sys_query = collection.find_one({'systematicname': id})
+	sys_query = collection.find_one({'systematicname': i})
 	if sys_query is not None:
 		return sys_query
-	sgid_query = collection.find_one({'sgid': id})
+	sgid_query = collection.find_one({'sgid': i})
 	if sgid_query is not None:
 		return sgid_query
 
@@ -88,18 +90,37 @@ def retrieve():
 			id = ids[0]
 			return redirect(url_for('single', id=id))
 		else:
-			not_found = []
-			result = [] 
+			d = str(uuid.uuid1())
+			os.mkdir('queries/'+d)
+			f = open('queries/'+d+'/ids.txt', 'w')
 			for i in ids:
-				q = protein_query(i)
-				if not q:
-					not_found.append(i)
-				else:
-					result.append(q)
-			return render_template('retrieve.html', not_found=not_found, result=result)
+				f.write(i+'\n')
+			f.close()
+#			not_found = []
+#			result = [] 
+#			for i in ids:
+#				q = protein_query(i)
+#				if not q:
+#					not_found.append(i)
+#				else:
+#					result.append(q)
+			return redirect(url_for('query', d=d))
+#			return render_template('retrieve.html', not_found=not_found, result=result)
 	else:
 		return render_template('searchform.html')
 
-@app.route('/query/<qid>')
-def query(qid):
-	pass
+@app.route('/query/<d>')
+def query(d):
+	f = open('queries/'+d+'/ids.txt', 'r')
+	ids = f.readlines()
+	not_found = []
+	result = [] 
+	for i in ids:
+		i = i.rstrip('\n')
+		q = protein_query(i)
+		if not q:
+			not_found.append(i)
+		else:
+			result.append(q)
+	return render_template('retrieve.html', not_found=not_found, result=result)
+	f.close()
