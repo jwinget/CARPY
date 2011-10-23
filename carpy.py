@@ -57,7 +57,9 @@ def protein_query(id):
 	if sgid_query is not None:
 		return sgid_query
 
-#--- Views ----#
+#---- Misc ----#
+
+#---- Views ----#
 @app.route('/')
 def index():
 	return render_template('index.html')
@@ -79,11 +81,25 @@ def single(id):
 		return render_template('single.html', result=result)
 
 @app.route('/retrieve', methods=['GET','POST'])
-def query():
+def retrieve():
 	if request.method == 'POST':
 		ids = request.form['identifiers'].split()
 		if len(ids) == 1:
 			id = ids[0]
 			return redirect(url_for('single', id=id))
+		else:
+			not_found = []
+			result = [] 
+			for i in ids:
+				q = protein_query(i)
+				if not q:
+					not_found.append(i)
+				else:
+					result.append(q)
+			return render_template('retrieve.html', not_found=not_found, result=result)
 	else:
 		return render_template('searchform.html')
+
+@app.route('/query/<qid>')
+def query(qid):
+	pass

@@ -11,3 +11,26 @@
 </div>
 <div class=footer>
 </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ url_for('static', filename='jquery-1.6.2.min.js') }}"><\/script>')</script>
+<script src="{{ url_for('static', filename='jquery.isotope.min.js') }}"></script>
+<script>
+$(document).ready(function() {
+	$('.sortable').isotope({
+		getSortData : {
+			genename : function ( $elem ) {
+				return $elem.find('.genename').text();
+				},
+			molecularweight : function ( $elem ) {
+				return parseInt( $elem.find('.molecularweight').text(), 10);
+				}
+			}
+		});
+	$('#sort-by a').click(function() {
+		var sortName = $(this).attr('href').slice(1);
+		$('.sortable').isotope({ sortBy : sortName });
+		return false;
+		});
+});
+</script>
+</html>
