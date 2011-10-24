@@ -7,3 +7,9 @@ CARPY is still in very early development, and is not functional at this time
 To import a new database:
 * Use vim to replace all instances of 'TRUE' with 1, 'FALSE' with 0, and 'NA' with ''
 * run: mongoimport -d Carpy -c Proteins --drop --headerline db.csv
+
+# To-do
+* Ability to provide custom background list
+* Sort enriched/deenriched properties by p-value
+* Isotope sorting/filtering of enriched/deenriched properties
+* About page (define terms)

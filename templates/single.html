@@ -71,26 +71,26 @@
 			<dd>Codon bias: {{ result['codonbias'] }}</dd>
 			<dd>FOP score: {{ result['fopscore'] }}</dd>
 			<dd>Evolutionary rate: {{ result['evolutionaryrate'] }}</dd>
-			<dd>Alanines: {{ result['ala'] }} ({{result['percentala']|round(2)}}%)</dd>
-			<dd>Arginines: {{ result['arg'] }} ({{result['percentarg']|round(2)}}%)</dd>
-			<dd>Asparagines: {{ result['asn'] }} ({{result['percentasn']|round(2)}}%)</dd>
-			<dd>Aspartates: {{ result['asp'] }} ({{result['percentasp']|round(2)}}%)</dd>
-			<dd>Cysteines: {{ result['cys'] }} ({{result['percentcys']|round(2)}}%)</dd>
-			<dd>Glutamines: {{ result['gln'] }} ({{result['percentgln']|round(2)}}%)</dd>
-			<dd>Glutamates: {{ result['glu'] }} ({{result['percentglu']|round(2)}}%)</dd>
-			<dd>Glycines: {{ result['gly'] }} ({{result['percentgly']|round(2)}}%)</dd>
-			<dd>Histidines: {{ result['his'] }} ({{result['percenthis']|round(2)}}%)</dd>
-			<dd>Isoleucines: {{ result['ile'] }} ({{result['percentile']|round(2)}}%)</dd>
-			<dd>Leucines: {{ result['leu'] }} ({{result['percentleu']|round(2)}}%)</dd>
-			<dd>Lysines: {{ result['lys'] }} ({{result['percentlys']|round(2)}}%)</dd>
-			<dd>Methionines: {{ result['met'] }} ({{result['percentmet']|round(2)}}%)</dd>
-			<dd>Phenylalanines: {{ result['phe'] }} ({{result['percentphe']|round(2)}}%)</dd>
-			<dd>Prolines: {{ result['pro'] }} ({{result['percentpro']|round(2)}}%)</dd>
-			<dd>Serines: {{ result['ser'] }} ({{result['percentser']|round(2)}}%)</dd>
-			<dd>Threonines: {{ result['thr'] }} ({{result['percentthr']|round(2)}}%)</dd>
-			<dd>Tryptophans: {{ result['trp'] }} ({{result['percenttrp']|round(2)}}%)</dd>
-			<dd>Tyrosines: {{ result['tyr'] }} ({{result['percenttyr']|round(2)}}%)</dd>
-			<dd>Valines: {{ result['val'] }} ({{result['percentval']|round(2)}}%)</dd>
+			<dd>Alanines: {{ result['ala'] }} ({{(result['percentala']*100)|round(2)}}%)</dd>
+			<dd>Arginines: {{ result['arg'] }} ({{(result['percentarg']*100)|round(2)}}%)</dd>
+			<dd>Asparagines: {{ result['asn'] }} ({{(result['percentasn']*100)|round(2)}}%)</dd>
+			<dd>Aspartates: {{ result['asp'] }} ({{(result['percentasp']*100)|round(2)}}%)</dd>
+			<dd>Cysteines: {{ result['cys'] }} ({{(result['percentcys']*100)|round(2)}}%)</dd>
+			<dd>Glutamines: {{ result['gln'] }} ({{(result['percentgln']*100)|round(2)}}%)</dd>
+			<dd>Glutamates: {{ result['glu'] }} ({{(result['percentglu']*100)|round(2)}}%)</dd>
+			<dd>Glycines: {{ result['gly'] }} ({{(result['percentgly']*100)|round(2)}}%)</dd>
+			<dd>Histidines: {{ result['his'] }} ({{(result['percenthis']*100)|round(2)}}%)</dd>
+			<dd>Isoleucines: {{ result['ile'] }} ({{(result['percentile']*100)|round(2)}}%)</dd>
+			<dd>Leucines: {{ result['leu'] }} ({{(result['percentleu']*100)|round(2)}}%)</dd>
+			<dd>Lysines: {{ result['lys'] }} ({{(result['percentlys']*100)|round(2)}}%)</dd>
+			<dd>Methionines: {{ result['met'] }} ({{(result['percentmet']*100)|round(2)}}%)</dd>
+			<dd>Phenylalanines: {{ result['phe'] }} ({{(result['percentphe']*100)|round(2)}}%)</dd>
+			<dd>Prolines: {{ result['pro'] }} ({{(result['percentpro']*100)|round(2)}}%)</dd>
+			<dd>Serines: {{ result['ser'] }} ({{(result['percentser']*100)|round(2)}}%)</dd>
+			<dd>Threonines: {{ result['thr'] }} ({{(result['percentthr'*100)]|round(2)}}%)</dd>
+			<dd>Tryptophans: {{ result['trp'] }} ({{(result['percenttrp']*100)|round(2)}}%)</dd>
+			<dd>Tyrosines: {{ result['tyr'] }} ({{(result['percenttyr']*100)|round(2)}}%)</dd>
+			<dd>Valines: {{ result['val'] }} ({{(result['percentval']*100)|round(2)}}%)</dd>
 	</div>
 </div>
 {% endblock %}
