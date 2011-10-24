@@ -221,8 +221,9 @@ def query(d):
 	n.close()
 
 	# Run the R script to determine enriched properties
-	outfile = query_dir+'enrichment_test.out'
-	subprocess.call(['Rscript', 'scripts/enrichment_test.R', query_dir])
+	if not os.path.exists(query_dir+'enrichement_test.out'): # Only run if it hasn't been done
+		outfile = query_dir+'enrichment_test.out'
+		subprocess.call(['Rscript', 'scripts/enrichment_test.R', query_dir])
 
 	# Process enrichment data
 	enriched_dict = {}
@@ -233,9 +234,9 @@ def query(d):
 		if row[0] != '':
 			if float(row[1]) < 0.05:
 				if float(row[2]) > 0:
-					enriched_dict[row[0]] = [row[1], row[2]]
+					enriched_dict[row[0]] = [float(row[1]), float(row[2]), '+']
 				else:
-					deenriched_dict[row[0]] = [row[1], row[2]]
+					deenriched_dict[row[0]] = [float(row[1]), float(row[2]), '']
 	qe.close()
 	ce = open(query_dir+'cat_enrichment.csv', 'r')
 	cat_enrichment = csv.reader(ce)
@@ -243,9 +244,9 @@ def query(d):
 		if row[0] != '':
 			if float(row[1]) < 0.05:
 				if float(row[2]) > 1:
-					enriched_dict[row[0]] = [float(row[1]), float(row[2])]
+					enriched_dict[row[0]] = [float(row[1]), float(row[2]), 'x']
 				else:
-					deenriched_dict[row[0]] = [float(row[1]), float(row[2])]
+					deenriched_dict[row[0]] = [float(row[1]), float(row[2]), 'x']
 	ce.close()
 
 	# Display proteins

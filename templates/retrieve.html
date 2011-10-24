@@ -29,31 +29,51 @@
 </ul>
 <div class=half>
 	<h2>Enriched properties</h2>
+	{% if not enriched %}
+		No statistically significant enrichment found
+	{% else %}
 	<table>
 	<tr class=table_head>
 		<td><h3>Property</h3></td>
-		<td><h3>adjusted p-value</h3></td>
+		<td><h3>adjusted<br />p-value</h3></td>
+		<td><h3>Difference (quantitative) or<br />Odd ratio (non-quantitative)</h3></td>
 	</tr>
 	{% for k,v in enriched|dictsort(false, 'value') %}
 	<tr>
 		<td class='sort-by'><a href='#{{k}}'>{{ name_dict[k] }}</a></td>
 		<td>{{ v[0] }}</td>
+		{% if v[2] == 'x' %}
+			<td>{{ v[1]|round(2) }}{{ v[2] }}</td>
+		{% else %}
+			<td>{{ v[2] }}{{ v[1]|round(2) }}</td>
+		{% endif %}
 	</tr>
 	{% endfor %}
 	</table>
+	{% endif %}
 	<h2>Deenriched properties</h2>
+	{% if not deenriched %}
+		No statistically significant deenrichment found
+	{% else %}
 	<table>
 	<tr class=table_head>
 		<td><h3>Property</h3></td>
 		<td><h3>adjusted p-value</h3></td>
+		<td><h3>Difference (quantitative) or<br />Odd ratio (non-quantitative)</h3></td>
 	</tr>
 	{% for k,v in deenriched|dictsort(false, 'value') %}
 	<tr>
 		<td class='sort-by'><a href='#{{k}}'>{{ name_dict[k] }}</a></td>
 		<td>{{ v[0] }}</td>
+		{% if v[2] == 'x' %}
+			<td>{{ v[1]|round(2) }}{{ v[2] }}</td>
+		{% else %}
+			<td>{{ v[2] }}{{ v[1]|round(2) }}</td>
+		{% endif %}
 	</tr>
 	{% endfor %}
 	</table>
+	{% endif %}
 </dl>
 	
 </div>

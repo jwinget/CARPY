@@ -4,7 +4,7 @@
 body {
 	background: url('bg.png') #E0E4CC top left repeat;
 	}
-* {
+html {
 	line-height: 140%;
 	}
 
@@ -161,7 +161,8 @@ table {
 	margin-bottom: 0.5em;
 	}
 td {
-	padding: 0.25em;
+	padding: 0.25em 0.5em;
+	text-align: center;
 	}
 /*-- Isotope --*/
 /**** Isotope Filtering ****/
