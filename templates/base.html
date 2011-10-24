@@ -21,9 +21,12 @@ $(document).ready(function() {
 			genename : function ( $elem ) {
 				return $elem.find('.genename').text();
 				},
-			molecularweight : function ( $elem ) {
-				return parseInt( $elem.find('.molecularweight').text(), 10);
-				}
+			systematicname : function ( $elem ) {
+				return $elem.find('.systematicname').text();
+				},
+		//	molecularweight : function ( $elem ) {
+		//		return parseInt( $elem.find('.molecularweight').text(), 10);
+		//		}
 			}
 		});
 	$('#sort-by a').click(function() {

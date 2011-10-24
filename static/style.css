@@ -132,18 +132,36 @@ textarea {
 
 .protein {
 	width: 17%;
+	height: 110px;
 	padding: 1%;
+	margin: 1%;
+	border-bottom: 1px dotted black;
 	}
 .category {
 	float: left;
 	width: 31%;
 	margin: 1%;
 	}
-.category dt {
+.category dt, .half dt {
 	font-size: 1.1em;
 	}
 .category dd {
 	padding: 0.5em;
+	}
+.half {
+	float: left;
+	width: 46%;
+	margin: 1%;
+	}
+table {
+	margin-bottom: 1em;
+	}
+.table_head {
+	border-bottom: 1px dotted black;
+	margin-bottom: 0.5em;
+	}
+td {
+	padding: 0.25em;
 	}
 /*-- Isotope --*/
 /**** Isotope Filtering ****/

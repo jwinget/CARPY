@@ -25,18 +25,47 @@
 <h3>Sort items by:</h3>
 <ul id='sort-by'>
 	<li><a href='#genename'>Gene name</a></li>
-	<li><a href='#molecularweight'>Molecular Weight</a></li>
+	<li><a href='#systematicname'>Systematic name</a></li>
 </ul>
-<div class=sortable>
-{% for r in result %}
-	<div class=protein>
-		<h1 class=genename>{{ r.genename }}</h1>
-		<h2>{{ r.systematicname }}</h2>
-		<ul>
-			<li>Mass: <span class=molecularweight>{{ r.molecularweight }}</span></li>
-		</ul>
+<div class=half>
+	<h2>Enriched properties</h2>
+	<table>
+	<tr class=table_head>
+		<td><h3>Property</h3></td>
+		<td><h3>adjusted p-value</h3></td>
+	</tr>
+	{% for k,v in enriched|dictsort(false, 'value') %}
+	<tr>
+		<td class='sort-by'><a href='#{{k}}'>{{ name_dict[k] }}</a></td>
+		<td>{{ v[0] }}</td>
+	</tr>
+	{% endfor %}
+	</table>
+	<h2>Deenriched properties</h2>
+	<table>
+	<tr class=table_head>
+		<td><h3>Property</h3></td>
+		<td><h3>adjusted p-value</h3></td>
+	</tr>
+	{% for k,v in deenriched|dictsort(false, 'value') %}
+	<tr>
+		<td class='sort-by'><a href='#{{k}}'>{{ name_dict[k] }}</a></td>
+		<td>{{ v[0] }}</td>
+	</tr>
+	{% endfor %}
+	</table>
+</dl>
+	
+</div>
+<div class=half>
+	<div class=sortable>
+	{% for r in result %}
+		<div class=protein>
+			<h1 class=genename>{{ r.genename }}</h1>
+			<h2 class=systematicname><a href="{{ url_for('single', id=r.systematicname) }}">{{ r.systematicname }}</a></h2>
+		</div>
+	{% endfor %}
 	</div>
-{% endfor %}
 </div>
 </div>
 {% endblock %}
