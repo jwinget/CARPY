@@ -112,6 +112,7 @@ h1 {
 h2, .nav ul {
 	text-shadow: 1px 1px 2px rgba(51, 51, 51, 0.33);
 	font-size: 1.3em;
+	padding-bottom: 0.25em;
 	}
 h3 {
 	font-size: 1.1em;
@@ -193,9 +194,8 @@ td {
 	right: 150px;
 	background: white;
 	}
-.comment_field {
+.comment {
 	width: 90%;
-	height: 3em;
 	}
 /*-- Isotope --*/
 /**** Isotope Filtering ****/
@@ -211,9 +211,9 @@ z-index: 1;
 
 .isotope,
 .isotope .isotope-item {
--webkit-transition-duration: 0.8s;
--moz-transition-duration: 0.8s;
-transition-duration: 0.8s;
+-webkit-transition-duration: 0.5s;
+-moz-transition-duration: 0.5s;
+transition-duration: 0.5s;
 }
 .isotope {
 -webkit-transition-property: height, width;

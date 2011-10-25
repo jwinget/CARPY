@@ -38,11 +38,11 @@
 		<td><h3>adjusted<br />p-value</h3></td>
 		<td><h3>Difference (quantitative) or<br />Odd ratio (non-quantitative)</h3></td>
 	</tr>
-	{% for k,v in enriched|dictsort(false, 'value') %}
+	{%- for k,v in enriched|dictsort(false, 'value') %}
 	<tr>
 		<td class='sort-by'><a href='#{{k}}'>{{ name_dict[k] }}</a></td>
 		<td>{{ v[0] }}</td>
-		{% if v[2] == 'x' %}
+		{%- if v[2] == 'x' %}
 			<td>{{ v[1]|round(2) }}{{ v[2] }}</td>
 		{% else %}
 			<td>{{ v[2] }}{{ v[1]|round(2) }}</td>
@@ -61,9 +61,9 @@
 		<td><h3>adjusted p-value</h3></td>
 		<td><h3>Difference (quantitative) or<br />Odd ratio (non-quantitative)</h3></td>
 	</tr>
-	{% for k,v in deenriched|dictsort(false, 'value') %}
+	{%- for k,v in deenriched|dictsort(false, 'value') %}
 	<tr>
-		<td class='sort-by'><a href='#{{k}}'>{{ name_dict[k] }}</a></td>
+		<td class='sort-by {{ k }}'><a href='#{{k}}'>{{ name_dict[k] }}</a></td>
 		<td>{{ v[0] }}</td>
 		{% if v[2] == 'x' %}
 			<td>{{ v[1]|round(2) }}{{ v[2] }}</td>
@@ -79,16 +79,11 @@
 </div>
 <div class=half>
 	<div class=sortable>
-	{% for r in result %}
-		<div class=protein>
+	{%- for r in result %}
+		<div class='protein {{ r.systematicname }}'>
 			<h1 class=genename>{{ r.genename }}</h1>
 			<h2 class=systematicname><a href="{{ url_for('single', id=r.systematicname) }}">{{ r.systematicname }}</a></h2>
 			<div class=shown></div>
-			<div class=hidden>
-			{% for k,v in enriched|dictsort %}
-				<div class={{ k }} val={{ v[0] }}>{{ name_dict[k] }}: {{ v[0] }}</div>
-			{% endfor %}
-			</div>
 		</div>
 	{% endfor %}
 	</div>
@@ -99,7 +94,18 @@
 {% block scripts %}
 <script>
 $(document).ready(function() {
+	{%- for r in result %}
+	$('.{{ r.systematicname }}').attr({
+		{%- for k,v in enriched|dictsort %}
+			{{ k }}: '{{ r[k] }}',
+		{% endfor %}
+		{%- for k,v in deenriched|dictsort %}
+			{{ k }}: '{{ r[k] }}',
+		{% endfor %}
+	});
+	{% endfor %}
 	$('.sortable').isotope({
+		sortAscending: false,
 		getSortData : {
 			genename : function ( $elem ) {
 				return $elem.find('.genename').text();
@@ -107,24 +113,30 @@ $(document).ready(function() {
 			systematicname : function ( $elem ) {
 				return $elem.find('.systematicname').text();
 				},
-			cai : function( $elem ) {
-				if($elem.find('.cai')=='cai') {
-					return parseFloat( $elem.attr('val'));
-					}
-				}
+		//	cai : function( $elem ) {
+		//		if($elem.find('.cai')=='cai') {
+		//			return parseFloat( $elem.attr('val'));
+		//			}
+		//		}
 	//	Want to be able to define these using variables
-	//		{% for k,v in enriched|dictsort %}
-	//		{{ k }} : function ( $elem ) {
-	//			if($elem.attr('property') == {{ k }}) {
-	//				return parseFloat( $elem.attr('val'));
-	//				}
-	//			}
-	//		{% endfor %}
+			{% for k,v in enriched|dictsort %}
+			{{ k }} : function ( $elem ) {
+			return parseFloat( $elem.attr('{{ k }}'));
+			},
+			{% endfor %}
+			{% for k,v in deenriched|dictsort %}
+			{{ k }} : function ( $elem ) {
+			return parseFloat( $elem.attr('{{ k }}'));
+			},
+			{% endfor %}
 			}
 		});
 	$('.sort-by a').click(function() {
 		var sortName = $(this).attr('href').slice(1);
 		$('.sortable').isotope({ sortBy : sortName });
+		{%- for r in result %}
+		$('.{{ r.systematicname }} .shown').html(sortName+':<br />'+$('.{{r.systematicname}}').attr(sortName));
+		{% endfor %}
 		return false;
 		});
 });
