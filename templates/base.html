@@ -11,29 +11,51 @@
 </div>
 <div class=footer>
 </div>
+<div class='feedback_button off'>
+	<a href=#feedback></a>
+</div>
+<div class='hidden feedback'>
+<form method=post action="">
+	<dl>
+		<dt>Comment, feature request, or bug report</dt>
+		<dd><input class=comment name=comment /></dd>
+		<dt>(Optional) Your email, so we can contact you about your feedback</dt>
+		<dd><input type=email class=feedback_email name=feedback_email /></dd>
+		<dd><input type=submit class=feedback_submit value=submit />
+	</dl>
+</form>
+</div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='jquery-1.6.2.min.js') }}"><\/script>')</script>
 <script src="{{ url_for('static', filename='jquery.isotope.min.js') }}"></script>
 <script>
-$(document).ready(function() {
-	$('.sortable').isotope({
-		getSortData : {
-			genename : function ( $elem ) {
-				return $elem.find('.genename').text();
-				},
-			systematicname : function ( $elem ) {
-				return $elem.find('.systematicname').text();
-				},
-		//	molecularweight : function ( $elem ) {
-		//		return parseInt( $elem.find('.molecularweight').text(), 10);
-		//		}
-			}
-		});
-	$('#sort-by a').click(function() {
-		var sortName = $(this).attr('href').slice(1);
-		$('.sortable').isotope({ sortBy : sortName });
-		return false;
-		});
-});
+$('.feedback_button a').click(function() {
+	$('.feedback').fadeToggle('slow');
+	if ($('.feedback_button').hasClass('on')) {
+		$('.feedback_button').removeClass('on').addClass('off');
+		} else if ($('.feedback_button').hasClass('off')) {
+		$('.feedback_button').removeClass('off').addClass('on');
+														        }
+	return false;
+	});
 </script>
+<script>
+$(function() {
+	$('.feedback_submit').click(function() {
+		$.post("{{ url_for('feedback') }}", { comment: $('input.comment').val(), sender: $('input.feedback_email').val() },
+			function() {
+				$('.feedback').fadeToggle('slow');
+				if ($('.feedback_button').hasClass('on')) {
+					$('.feedback_button').removeClass('on').addClass('off');
+					} else if ($('.feedback_button').hasClass('off')) {
+					$('.feedback_button').removeClass('off').addClass('on');
+								}
+					}
+			);
+		return false;
+		}
+	)});
+				
+</script>
+{% block scripts %}{% endblock %}
 </html>

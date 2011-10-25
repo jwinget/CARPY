@@ -4,6 +4,7 @@ import uuid
 import os
 import subprocess
 import csv
+import smtplib
 
 #---- Reverse Proxy Fix ----#
 class ReverseProxied(object):
@@ -49,6 +50,12 @@ connection.register([Protein])
 collection = connection['Carpy'].Proteins
 
 #---- Functions ----#
+def send_email(sender, receiver, subject, body):
+	msg = ("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s" %(sender, receiver, subject, body))
+	s = smtplib.SMTP('localhost')
+	s.sendmail(sender, [receiver], msg)
+	s.quit()
+
 def protein_query(i):
 	i = i.upper()
 	genename_query = collection.find_one({'genename': i})
@@ -176,6 +183,20 @@ def about():
 @app.route('/cite')
 def cite():
 	return render_template('cite.html')
+
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+	if request.method == 'POST':
+		sender = request.form['sender']
+		body = request.form['comment']
+		#sender = request.args.get('sender', None)
+		#body = request.args.get('comment', None)
+		subject = 'CARPY feedback'
+		recipient = 'jwinget@gmail.com'
+		send_email(sender, recipient, subject, body)
+		return render_template('index.html')
+	else:
+		return render_template('index.html')
 
 @app.route('/protein/<id>')
 def single(id):

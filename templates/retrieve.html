@@ -23,7 +23,7 @@
 {% endif %}
 <div class=main>
 <h3>Sort items by:</h3>
-<ul id='sort-by'>
+<ul class='sort-by'>
 	<li><a href='#genename'>Gene name</a></li>
 	<li><a href='#systematicname'>Systematic name</a></li>
 </ul>
@@ -83,9 +83,50 @@
 		<div class=protein>
 			<h1 class=genename>{{ r.genename }}</h1>
 			<h2 class=systematicname><a href="{{ url_for('single', id=r.systematicname) }}">{{ r.systematicname }}</a></h2>
+			<div class=shown></div>
+			<div class=hidden>
+			{% for k,v in enriched|dictsort %}
+				<div class={{ k }} val={{ v[0] }}>{{ name_dict[k] }}: {{ v[0] }}</div>
+			{% endfor %}
+			</div>
 		</div>
 	{% endfor %}
 	</div>
 </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+	$('.sortable').isotope({
+		getSortData : {
+			genename : function ( $elem ) {
+				return $elem.find('.genename').text();
+				},
+			systematicname : function ( $elem ) {
+				return $elem.find('.systematicname').text();
+				},
+			cai : function( $elem ) {
+				if($elem.find('.cai')=='cai') {
+					return parseFloat( $elem.attr('val'));
+					}
+				}
+	//	Want to be able to define these using variables
+	//		{% for k,v in enriched|dictsort %}
+	//		{{ k }} : function ( $elem ) {
+	//			if($elem.attr('property') == {{ k }}) {
+	//				return parseFloat( $elem.attr('val'));
+	//				}
+	//			}
+	//		{% endfor %}
+			}
+		});
+	$('.sort-by a').click(function() {
+		var sortName = $(this).attr('href').slice(1);
+		$('.sortable').isotope({ sortBy : sortName });
+		return false;
+		});
+});
+</script>
 {% endblock %}

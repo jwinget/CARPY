@@ -71,7 +71,7 @@ dt, .form_button {
 	}
 .footer {
 	clear: both;
-	border-bottom: 20px solid #FA6900;
+	border-bottom: 20px solid #f38630;
 	}
 
 /* Typography */
@@ -163,6 +163,39 @@ table {
 td {
 	padding: 0.25em 0.5em;
 	text-align: center;
+	}
+.hidden { display: none; }
+
+.feedback_button {
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	}
+.feedback_button a {
+	display: block;
+	text-decoration: none;
+	border-bottom: none;
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	}
+.off {
+	background: url('feedback_sprite.png') 0 0 no-repeat;
+	}
+.on {
+	background: url('feedback_sprite.png') -150px 0 no-repeat;
+	}
+.feedback {
+	position: fixed;
+	padding: 0.5em;
+	border: 1px solid black;
+	bottom: 25px;
+	right: 150px;
+	background: white;
+	}
+.comment_field {
+	width: 90%;
+	height: 3em;
 	}
 /*-- Isotope --*/
 /**** Isotope Filtering ****/

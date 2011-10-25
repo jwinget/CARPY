@@ -4,7 +4,6 @@
 		<ul>
 			<li><a href="{{ url_for("index") }}">Home</a></li>
 			<li><a href="{{ url_for("about") }}">About</a></li>
-			<li><a class=active href="{{ url_for("query") }}">Query</a></li>
 			<li><a href="{{ url_for("cite") }}">Cite</a></li>
 		</ul>
 	</div>
@@ -13,5 +12,12 @@
 	<div class=main>
 		<h2>Protein Not Found</h2>
 		Your query did not match any proteins in the database.
+		<dl>
+			<dt>Some tips:</dt>
+			<dd>Make sure that there are no characters besides the ID (i.e. "S00001445" instead of "SGD:S00001445")</dd>
+			<dd>Use a supported identifier. CARPY can currently accept gene names (e.g. "hul5"), systematic names (e.g. "YGL141W"), and SGIDs (e.g. "S000003109")</dd>
+			<dd>Enter a single ID per line, or include spaces between the IDs</dd>
+			<dd>Check your spelling</dd>
+		</dl>
 	</div>
 {% endblock %}
