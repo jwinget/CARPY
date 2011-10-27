@@ -3,18 +3,19 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>
 <div class=header>
-	<a class= logo href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='logo.png') }}" /></a>
+	<a class=logo href="{{ url_for('index') }}"><h1>CARPY |</h1></a><h3> comprehensive annotated repository of proteins in yeast</h3>
 	<div class=navigation>{% block nav %}{% endblock %}</div>
 </div>
 <div class=page>
 	{% block body %}{% endblock %}
 </div>
 <div class=footer>
+<div class='feedback_button'>
+	<a href=#feedback class='feedback_b off'>feedback</a>
 </div>
-<div class='feedback_button off'>
-	<a href=#feedback></a>
 </div>
 <div class='hidden feedback'>
+<h2 class=box_title>Feedback</h2><br />
 <form method=post action="">
 	<dl>
 		<dt>Comment, feature request, or bug report</dt>
@@ -28,34 +29,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='jquery-1.6.2.min.js') }}"><\/script>')</script>
 <script src="{{ url_for('static', filename='jquery.isotope.min.js') }}"></script>
-<script>
-$('.feedback_button a').click(function() {
-	$('.feedback').fadeToggle('slow');
-	if ($('.feedback_button').hasClass('on')) {
-		$('.feedback_button').removeClass('on').addClass('off');
-		} else if ($('.feedback_button').hasClass('off')) {
-		$('.feedback_button').removeClass('off').addClass('on');
-														        }
-	return false;
-	});
-</script>
-<script>
-$(function() {
-	$('.feedback_submit').click(function() {
-		$.post("{{ url_for('feedback') }}", { comment: $('input.comment').val(), sender: $('input.feedback_email').val() },
-			function() {
-				$('.feedback').fadeToggle('slow');
-				if ($('.feedback_button').hasClass('on')) {
-					$('.feedback_button').removeClass('on').addClass('off');
-					} else if ($('.feedback_button').hasClass('off')) {
-					$('.feedback_button').removeClass('off').addClass('on');
-								}
-					}
-			);
-		return false;
-		}
-	)});
-				
-</script>
+<script src="{{ url_for('static', filename='modernizr.js') }}"></script>
+<script src="{{ url_for('static', filename='feedback.js') }}"></script>
 {% block scripts %}{% endblock %}
 </html>

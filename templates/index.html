@@ -9,33 +9,32 @@
 	</div>
 {% endblock %}
 {% block body %}
-	<div class=alert>
+	<div class=notify>
 	<h3>CARPY is currently in alpha. Basic functionality should be intact.</h3>
 	</div>
-	<div class=main>
-		<div class=column>
-			<h2>What is CARPY?</h2>
-			<p>CARPY is a tool for testing enrichment of protein properties.
-			<p>Currently 40+ properties compiled from SGD and high-throughput analyses are tracked for over 6000 proteins.
-			<p>The database can be queried by SGID or yeast ORF identifiers
+		<div class='box left'>
+			<h2 class=box_title>What is CARPY?</h2><br />
+			CARPY is a tool for testing enrichment of protein properties.
+			Currently 40+ properties compiled from SGD and high-throughput analyses are tracked for over 6000 proteins.
+			The database can be queried by gene name, SGID or yeast ORF identifiers
 		</div>
-		<div class=column>
-			<h2>How does it work?</h2>	
-			<p>The input for CARPY is a list of protein IDs or gene names</p>
-			<p>CARPY performs statistical analysis of all properties to find those that are significantly enriched or de-enriched in your dataset compared to the proteome</p>
-			<p>More information on the statistical analysis can be found on the <a href="{{ url_for("about") }}">about</a> page</p>
-		</div>
-		<div class=column>
-			<h2>Start a query</h2>
+		<div class='box right'>
+			<h2 class=box_title>Start a query</h2><br />
 			<div class=querybox>
-				<h3>Retrieve Data</h3>
-				<h4>Paste IDs, 1/line (gene name, yORF, or SGID)</h4>
+				<ul>
+					<li>One ID per line</li>
+					<li>Search by gene name, systematic name (yORF), or SGID</li>
+				</ul>
 				<form action="{{ url_for('retrieve') }}" method=POST>
-					<dt>Interesting or Enriched Proteins
-					<dd><textarea rows=10 name=identifiers></textarea>
-			<!--		<dt>(Optional) Background Proteins
-					<dd><textarea rows=10 name=background></textarea>-->
+					<dl>
+					<dt>Experimental Group
+					<dd><textarea class=searchbox rows=10 name=identifiers></textarea>
+					</dl>
+					<dl>
+					<dt>(Optional) Control Group
+					<dd><textarea placeholder='Not yet implemented' class=searchbox rows=10 name=background></textarea>
 					<dd><input type=submit value='Submit Query' class=form_button />
+					</dl>
 				</form>
 			</div>
 			<!--<h3>or:</h3>
@@ -51,6 +50,12 @@
 				</dl>
 				</form>
 			</div>-->
+		</div>
+		<div class='box left'>
+			<h2 class=box_title>How does it work?</h2><br />	
+			The input for CARPY is a list of protein IDs or gene names</p>
+			CARPY performs statistical analysis of all properties to find those that are significantly enriched or de-enriched in your dataset compared to the proteome
+			More information on the statistical analysis can be found on the <a href="{{ url_for("about") }}">about</a> page
 		</div>
 	</div>
 {% endblock %}
