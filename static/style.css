@@ -1,5 +1,7 @@
 @import url('reset.css');
-
+html {
+	overflow: auto;
+	}
 body {
 	background: white;
 	line-height: 140%;
@@ -28,18 +30,22 @@ body {
 	padding: 0em 1em 1em 1em;
 	}
 .left {
-	width: 30%;
+	width: 28%;
 	margin: 1%;
 	margin-top: 2em;
 	float: left;
 	}
 .right {
 	width: 50%;
-	margin: 1%;
+	margin-right: 1em;
 	margin-top: 2em;
 	float: right;
 	}
-.box_title {
+.single h1 {
+	font-family: 'Amaranth', 'Helvetica Neue', Helvetica, Arial, sans;
+	font-size: 2em;
+	}	
+.box_title, .props h2 {
 	font-family: 'Amaranth', 'Helvetica Neue', Helvetica, Arial, sans;
 	font-size: 1.4em;
 	display: inline;
@@ -64,6 +70,10 @@ body {
 	margin: 0.5em;
 	margin-top: 1em;
 	}
+.single {
+	padding-left: 0.5em;
+	}
+.clear { height: 5em; clear: both; }
 a {
 	text-decoration: none;
 	}
@@ -92,12 +102,61 @@ a {
 	border: 2px solid #CBE86B;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans;
 	}
+.half { float: left; width: 50%;}
+.id_sort h3 { font-family: 'Amaranth', 'Helvetica Neue', Helvetica, Arial, sans; 
+font-size: 1.1em; }
+.id_sort { padding-left: 1em; margin-bottom: 2em; }
+.id_sort ul li, .id_sort h3 {
+	display: inline;
+	}
+.properties {
+	overflow: hidden;
+	}
+.properties_button {
+	position: relative;
+	float: right;
+	margin-top: -1em;
+	display: inline block;
+	background: white;
+	padding: 0.25em;
+	}
+.props {
+	width: 90%;
+	float: left;
+	clear: left;
+	margin: 1em;
+	}
+table {
+	float: left;
+	width: 90%;
+	}
+.table_head td {
+	border-bottom: 1px dotted black;
+	font-weight: bold;
+	}
+.protein { 
+	width: 10em;
+	height: 6em;
+	margin: 1em;
+	padding: 0.5em;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.1);
+	box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.1);
+	}
+.protein .genename {
+	font-weight: bold;
+	}
 .footer {
 	position: fixed;
 	left: 0;
 	bottom: 0;
 	background: #1C140D;
 	width: 100%;
+	clear: both;
+	z-index: 10;
 	}
 .hidden {
 	display: none;
@@ -113,7 +172,7 @@ a {
 .feedback {
 	position: fixed;
 	background: white;
-	right: 1.5em;
+	right: 1em;
 	bottom: 3em;
 	z-index: 5;
 	border: 5px solid #CBE86B;

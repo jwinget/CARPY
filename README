@@ -2,7 +2,7 @@ CARPY is a web app for comparing protein properties.
 The database is compiled from SGD and high-throughput studies.
 Comparisons are done using R, and the site is built on the Flask web framework.
 
-CARPY is still in very early development, and is not functional at this time
+CARPY is currently in an alpha release
 
 To import a new database:
 * Use vim to replace all instances of 'TRUE' with 1, 'FALSE' with 0, and 'NA' with ''
@@ -10,6 +10,9 @@ To import a new database:
 
 # To-do
 * Ability to provide custom background list
-* Sort enriched/deenriched properties by p-value
-* Isotope sorting/filtering of enriched/deenriched properties
 * About page (define terms)
+* Complete redesign (single and multi-protein views)
+* Clean up JS in multi-protein view
+	- Use embedded JSON representation of data
+	- Get template logic out of JS (this is really ugly)
+	- Move JS to external file

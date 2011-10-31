@@ -22,16 +22,21 @@
 </div>
 {% endif %}
 <div class=main>
+<div class='id_sort'>
 <h3>Sort items by:</h3>
-<ul class='sort-by'>
+<ul class='id_props sort-by'>
 	<li><a href='#genename'>Gene name</a></li>
 	<li><a href='#systematicname'>Systematic name</a></li>
 </ul>
+</div>
 <div class=half>
+	<div class='box props'>
+	<span class='properties_button'><a href="#">Expand/Collapse</a></span>
 	<h2>Enriched properties</h2>
 	{% if not enriched %}
 		No statistically significant enrichment found
 	{% else %}
+	<div class=properties>
 	<table>
 	<tr class=table_head>
 		<td><h3>Property</h3></td>
@@ -50,11 +55,16 @@
 	</tr>
 	{% endfor %}
 	</table>
+	</div>
 	{% endif %}
+	</div>
+	<div class='box props'>
+	<span class='properties_button'><a href="#">Expand/Collapse</a></span>
 	<h2>Deenriched properties</h2>
 	{% if not deenriched %}
 		No statistically significant deenrichment found
 	{% else %}
+	<div class=properties>
 	<table>
 	<tr class=table_head>
 		<td><h3>Property</h3></td>
@@ -73,9 +83,9 @@
 	</tr>
 	{% endfor %}
 	</table>
+	</div>
 	{% endif %}
-</dl>
-	
+	</div>
 </div>
 <div class=half>
 	<div class=sortable>
@@ -92,6 +102,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src='{{ url_for('static', filename='properties.js') }}'></script>
 <script>
 $(document).ready(function() {
 	{%- for r in result %}

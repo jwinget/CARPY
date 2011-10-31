@@ -21,76 +21,85 @@
 	</ul>
 </div>
 {% endif %}
-<div class=main>
-	<div class=single>
-		<h1>{{ result['genename'] }}</h1>
-		<h2>{{ result['systematicname'] }} | <a href="http://www.yeastgenome.org/cgi-bin/locus.fpl?dbid={{ result['sgid'] }}">{{ result['sgid'] }}</a></h2>
-		<dl class=category>
-			<dt>Biochemical Properties</dt>
-			<dd>Molecular Weight: {{ result['molecularweight']/1000|round(2) }} kDa</dd>
-			<dd>Length: {{ result['proteinlength'] }} amino acids</dd>
-			<dd>pI: {{ result['pi'] }}</dd>
-			{% if result['essential'] == 1 %}
-			<dd>Essential</dd>
-			{% endif %}
-			{% if result['halflife'] != '' %}
-			<dd>Half life: {{ result['halflife'] }} min</dd>
-			{% endif %}
-			{% if result['localization'] != '' %}
-			<dd>Localization: {{ result['localization'] }}</dd>
-			{% endif %}
-			<dd>GRAVY score: {{ result['gravyscore'] }}</dd>
-			<dd>Aromaticity score: {{ result['aromaticityscore'] }}</dd>
-			<dd>ORF ID: {{ result['orfid'] }}</dd>
-			<dd>Gene type: {{ result['genetype'] }}</dd>
-		</dl>
-		<dl class=category>
-			<dt>Identified Interactions</dt>
-			<dd>Mass Spec: {{ result['interactorsms'] }}</dd>
-			<dd>Yeast two hybrid: {{ result['interactorsyeast'] }}</dd>
-			<dd>Hub type: {{ result['hubtype'] }}</dd>
-		</dl>
-		<dl class=category>
-			<dt>Structure &amp; Function</dt>
-			<dd>Percent disorder (DisoPred2): {{ result['disorder']|round(2) }}</dd>
-			<dd>Percent disorder (IUPred long): {{ result['iupredlong']|round(2) }}</dd>
-			<dd>Percent disorder (IUPred short): {{ result['iupredshort']|round(2) }}</dd>
-			<dd>Disordered binding/Disordered length (long): {{ result['percentiupredlongbinding']|round(2) }}</dd>
-			<dd>Disordered binding/Disordered length (short): {{ result['percentiupredshortbinding']|round(2) }}</dd>
-		</dl>
-		<dl class=category>
-			<dt>Aggregation &amp; Prion-like</dt>
-			<dd>Aggregation-prone (Tango): {% if result['tango'] == 1 %}yes{% else %}no{% endif %}</dd>
-			<dd>Prion-like (Weissman): {% if result['weissmanprion'] == 1 %}yes{% else %}no{% endif %}</dd>
-			<dd>Prion-like (Gerstein): {% if result['gersteinprion'] == 1 %}yes{% else %}no{% endif %}</dd>
-			<dd>Prion-like (Lindquist): {% if result['lindquistprion'] == 1 %}yes{% else %}no{% endif %}</dd>
-		</dl>
-		<dl class=category>
-			<dt>Codons &amp; Amino Acids</dt>
-			<dd>Codon adaptation index: {{ result['cai'] }}</dd>
-			<dd>Codon bias: {{ result['codonbias'] }}</dd>
-			<dd>FOP score: {{ result['fopscore'] }}</dd>
-			<dd>Evolutionary rate: {{ result['evolutionaryrate'] }}</dd>
-			<dd>Alanines: {{ result['ala'] }} ({{(result['percentala']*100)|round(2)}}%)</dd>
-			<dd>Arginines: {{ result['arg'] }} ({{(result['percentarg']*100)|round(2)}}%)</dd>
-			<dd>Asparagines: {{ result['asn'] }} ({{(result['percentasn']*100)|round(2)}}%)</dd>
-			<dd>Aspartates: {{ result['asp'] }} ({{(result['percentasp']*100)|round(2)}}%)</dd>
-			<dd>Cysteines: {{ result['cys'] }} ({{(result['percentcys']*100)|round(2)}}%)</dd>
-			<dd>Glutamines: {{ result['gln'] }} ({{(result['percentgln']*100)|round(2)}}%)</dd>
-			<dd>Glutamates: {{ result['glu'] }} ({{(result['percentglu']*100)|round(2)}}%)</dd>
-			<dd>Glycines: {{ result['gly'] }} ({{(result['percentgly']*100)|round(2)}}%)</dd>
-			<dd>Histidines: {{ result['his'] }} ({{(result['percenthis']*100)|round(2)}}%)</dd>
-			<dd>Isoleucines: {{ result['ile'] }} ({{(result['percentile']*100)|round(2)}}%)</dd>
-			<dd>Leucines: {{ result['leu'] }} ({{(result['percentleu']*100)|round(2)}}%)</dd>
-			<dd>Lysines: {{ result['lys'] }} ({{(result['percentlys']*100)|round(2)}}%)</dd>
-			<dd>Methionines: {{ result['met'] }} ({{(result['percentmet']*100)|round(2)}}%)</dd>
-			<dd>Phenylalanines: {{ result['phe'] }} ({{(result['percentphe']*100)|round(2)}}%)</dd>
-			<dd>Prolines: {{ result['pro'] }} ({{(result['percentpro']*100)|round(2)}}%)</dd>
-			<dd>Serines: {{ result['ser'] }} ({{(result['percentser']*100)|round(2)}}%)</dd>
-			<dd>Threonines: {{ result['thr'] }} ({{(result['percentthr']*100)|round(2)}}%)</dd>
-			<dd>Tryptophans: {{ result['trp'] }} ({{(result['percenttrp']*100)|round(2)}}%)</dd>
-			<dd>Tyrosines: {{ result['tyr'] }} ({{(result['percenttyr']*100)|round(2)}}%)</dd>
-			<dd>Valines: {{ result['val'] }} ({{(result['percentval']*100)|round(2)}}%)</dd>
+<div class=single>
+	<h1>{{ result['genename'] }}</h1>
+	<h2>{{ result['systematicname'] }} | <a href="http://www.yeastgenome.org/cgi-bin/locus.fpl?dbid={{ result['sgid'] }}">{{ result['sgid'] }}</a></h2>
+	<div class='box left'>
+		<h2 class='box_title'>Biochemical Properties</h2>
+		<ul>
+		<li>Molecular Weight: {{ result['molecularweight']/1000|round(2) }} kDa</li>
+		<li>Length: {{ result['proteinlength'] }} amino acids</li>
+		<li>pI: {{ result['pi'] }}</li>
+		{% if result['essential'] == 1 %}
+		<li>Essential</li>
+		{% endif %}
+		{% if result['halflife'] != '' %}
+		<li>Half life: {{ result['halflife'] }} min</li>
+		{% endif %}
+		{% if result['localization'] != '' %}
+		<li>Localization: {{ result['localization'] }}</li>
+		{% endif %}
+		<li>GRAVY score: {{ result['gravyscore'] }}</li>
+		<li>Aromaticity score: {{ result['aromaticityscore'] }}</li>
+		<li>ORF ID: {{ result['orfid'] }}</li>
+		<li>Gene type: {{ result['genetype'] }}</li>
+	</ul>
+	</div>
+	<div class='box left'>
+		<h2 class='box_title'>Identified Interactions</h2>
+		<ul>
+		<li>Mass Spec: {{ result['interactorsms'] }}</li>
+		<li>Yeast two hybrid: {{ result['interactorsyeast'] }}</li>
+		<li>Hub type: {{ result['hubtype'] }}</li>
+		</ul>
+	</div>
+	<div class='box left'>
+		<h2 class='box_title'>Structure &amp; Function</h2>
+		<ul>
+		<li>Percent disorder (DisoPred2): {{ result['disorder']|round(2) }}</li>
+		<li>Percent disorder (IUPred long): {{ result['iupredlong']|round(2) }}</li>
+		<li>Percent disorder (IUPred short): {{ result['iupredshort']|round(2) }}</li>
+		<li>Disordered binding/Disordered length (long): {{ result['percentiupredlongbinding']|round(2) }}</li>
+		<li>Disordered binding/Disordered length (short): {{ result['percentiupredshortbinding']|round(2) }}</li>
+		</ul>
+	</div>
+	<div class='box left'>
+		<h2 class='box_title'>Aggregation &amp; Prion-like</h2>
+		<ul>
+		<li>Aggregation-prone (Tango): {% if result['tango'] == 1 %}yes{% else %}no{% endif %}</li>
+		<li>Prion-like (Weissman): {% if result['weissmanprion'] == 1 %}yes{% else %}no{% endif %}</li>
+		<li>Prion-like (Gerstein): {% if result['gersteinprion'] == 1 %}yes{% else %}no{% endif %}</li>
+		<li>Prion-like (Lindquist): {% if result['lindquistprion'] == 1 %}yes{% else %}no{% endif %}</li>
+		</ul>
+	</div>
+	<div class='box left'>
+		<h2 class='box_title'>Codons &amp; Amino Acids</h2>
+		<ul>
+		<li>Codon adaptation index: {{ result['cai'] }}</li>
+		<li>Codon bias: {{ result['codonbias'] }}</li>
+		<li>FOP score: {{ result['fopscore'] }}</li>
+		<li>Evolutionary rate: {{ result['evolutionaryrate'] }}</li>
+		<li>Alanines: {{ result['ala'] }} ({{(result['percentala']*100)|round(2)}}%)</li>
+		<li>Arginines: {{ result['arg'] }} ({{(result['percentarg']*100)|round(2)}}%)</li>
+		<li>Asparagines: {{ result['asn'] }} ({{(result['percentasn']*100)|round(2)}}%)</li>
+		<li>Aspartates: {{ result['asp'] }} ({{(result['percentasp']*100)|round(2)}}%)</li>
+		<li>Cysteines: {{ result['cys'] }} ({{(result['percentcys']*100)|round(2)}}%)</li>
+		<li>Glutamines: {{ result['gln'] }} ({{(result['percentgln']*100)|round(2)}}%)</li>
+		<li>Glutamates: {{ result['glu'] }} ({{(result['percentglu']*100)|round(2)}}%)</li>
+		<li>Glycines: {{ result['gly'] }} ({{(result['percentgly']*100)|round(2)}}%)</li>
+		<li>Histidines: {{ result['his'] }} ({{(result['percenthis']*100)|round(2)}}%)</li>
+		<li>Isoleucines: {{ result['ile'] }} ({{(result['percentile']*100)|round(2)}}%)</li>
+		<li>Leucines: {{ result['leu'] }} ({{(result['percentleu']*100)|round(2)}}%)</li>
+		<li>Lysines: {{ result['lys'] }} ({{(result['percentlys']*100)|round(2)}}%)</li>
+		<li>Methionines: {{ result['met'] }} ({{(result['percentmet']*100)|round(2)}}%)</li>
+		<li>Phenylalanines: {{ result['phe'] }} ({{(result['percentphe']*100)|round(2)}}%)</li>
+		<li>Prolines: {{ result['pro'] }} ({{(result['percentpro']*100)|round(2)}}%)</li>
+		<li>Serines: {{ result['ser'] }} ({{(result['percentser']*100)|round(2)}}%)</li>
+		<li>Threonines: {{ result['thr'] }} ({{(result['percentthr']*100)|round(2)}}%)</li>
+		<li>Tryptophans: {{ result['trp'] }} ({{(result['percenttrp']*100)|round(2)}}%)</li>
+		<li>Tyrosines: {{ result['tyr'] }} ({{(result['percenttyr']*100)|round(2)}}%)</li>
+		<li>Valines: {{ result['val'] }} ({{(result['percentval']*100)|round(2)}}%)</li>
+		</ul>
 	</div>
 </div>
 {% endblock %}
