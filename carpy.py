@@ -210,6 +210,7 @@ def single(id):
 def retrieve():
 	if request.method == 'POST':
 		ids = request.form['identifiers'].split()
+		bg = request.form['background'].split()
 		if len(ids) == 1:
 			id = ids[0]
 			return redirect(url_for('single', id=id))
@@ -226,6 +227,19 @@ def retrieve():
 				else:
 					n.write(i+'\n')
 			f.close()
+
+			if bg:
+				f = open('queries/'+d+'/background.txt', 'w')
+				for b in bg:
+					r = protein_query(b)
+					if r:
+						sys_name = r['systematicname']
+						f.write(sys_name+'\n')
+					else:
+						n.write(i+'\n')
+				f.close()
+				n.close()
+
 			return redirect(url_for('query', d=d))
 	else:
 		return render_template('searchform.html')

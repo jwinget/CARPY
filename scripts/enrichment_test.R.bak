@@ -10,15 +10,6 @@ db <- read.csv("db.csv",header=T,row.names=1)
 input <- read.delim(paste(directory,'ids.txt', sep=''),header=F)
 input <- as.character(input[,1]) # convert dataframe to vector of characters
 
-# If background list exists, use that for comparison
-# If not, use all of proteome
-if(file.exists(paste(directory,'background.txt',sep=''))) {
-	background <- read.delim(paste(directory,'background.txt',sep=''),header=F)
-	background <- as.character(background[,1])
-} else {
-	background <- row.names(db)
-}
-
 # Separate comparisons into two groups: quantitative versus categorical
 quantitative <- vector()
 categorical <- vector()
@@ -47,8 +38,8 @@ row.names(quant.wilcox) <- quantitative
 colnames(quant.wilcox) <- c("pvalue","difference")
 
 for(x in c(1:length(quantitative))) {
-	quant.wilcox[x,1] <- wilcox.test(db[background,quantitative[x]],db[input,quantitative[x]],na.rm=T)$p.value
-	quant.wilcox[x,2] <- median(db[input,quantitative[x]],na.rm=T) - median(db[background,quantitative[x]],na.rm=T)
+	quant.wilcox[x,1] <- wilcox.test(db[,quantitative[x]],db[input,quantitative[x]],na.rm=T)$p.value
+	quant.wilcox[x,2] <- median(db[input,quantitative[x]],na.rm=T) - median(db[,quantitative[x]],na.rm=T)
 }
 
 # Correct for multiple comparisons using Benjamini-Hochberg FDR method
@@ -64,7 +55,7 @@ write.csv(quant.wilcox,file=quant.filename)
 # Perform enrichment analysis for each categorical column
 # Using Fisher's exact test
 
-fisherit <- function(column,dataone,datatwo) {
+fisherit <- function(column,dataone=row.names(db),datatwo) {
 	contingencytable <- matrix(ncol=2,nrow=2)
 	contingencytable[2,1] <- sum(db[dataone,column],na.rm=T)
 	contingencytable[2,2] <- length(dataone) - contingencytable[2,1]
@@ -80,7 +71,7 @@ row.names(cat.fisher) <- categorical
 colnames(cat.fisher) <- c("pvalue","ratio")
 
 for(x in c(1:length(categorical))) {
-	result <- fisherit(column=categorical[x],dataone=background,datatwo=input)
+	result <- fisherit(column=categorical[x],datatwo=input)
 	cat.fisher[x,1] <- result$p.value
 	cat.fisher[x,2] <- result$estimate 
 }	
@@ -121,4 +112,3 @@ write.csv(cat.fisher,file=cat.filename)
 #	interestinggenes[bottom,x] <- -1
 #	interestinggenes[top,x] <- 1
 #}
-
