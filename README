@@ -9,9 +9,13 @@ To import a new database:
 * run: mongoimport -d Carpy -c Proteins --drop --headerline db.csv
 
 # To-do
-* Ability to provide custom background list
-* About page (define terms)
-* Complete redesign (single and multi-protein views)
+* About page
+	- Define terms
+	- Cite data sources
+	- General instructions for use
+* Fix sort order of "Rank of Multifunctionality", check other properties
+* Flag non-independent/misleading properties
+* Produce downloadable report of results
 * Clean up JS in multi-protein view
 	- Use embedded JSON representation of data
 	- Get template logic out of JS (this is really ugly)

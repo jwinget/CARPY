@@ -1,1 +1,4 @@
 queries/
+*.pid
+*.pyc
+*.Rout
